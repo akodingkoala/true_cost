@@ -1,7 +1,6 @@
 # True Cost
 
-A browser extension that tracks product prices over time so you can see whether a
-"70% off!" sale is real, or whether the store inflated the "original" price.
+I made a browser extension that tracks product prices over time so you can see if the "70% off" sale is real, or whether the store inflated the original price to make it SEEM like it's a discounted price
 
 ## Project layout
 
@@ -15,23 +14,27 @@ src/
     popup.html / popup.css / popup.js
 ```
 
-How data flows: **page → content script → background worker (saves) → popup (reads & compares)**.
+How data flows: page ->content script ->background worker (saves) -> popup (reads & compares)
 
 ## Run it locally (Chrome / Edge / Brave)
+#personally I am using chrome for testing it since chrome is most commonly used
+#here is how to open it on chrome
 
 1. Open `chrome://extensions`
 2. Turn on **Developer mode** (top right)
 3. Click **Load unpacked** and choose this folder
 4. Visit a product page, then click the True Cost icon in the toolbar
 
-After editing code, click the reload ↻ icon on the extension's card in `chrome://extensions`.
+After editing code, click the reload icon on the extension's card in `chrome://extensions`.
 
-## Limitations / roadmap
+## Limitations / roadmap updated for November 26th 2026
 
 - History only starts when *you* first visit a product. To know the price from when an
   item was first listed, we need outside data: e.g. a shared backend where users'
   extensions pool observations, or APIs like Keepa (Amazon).
+- I want to make it so that data is traced from before as well, still searching for a way to get that data
 - Price extraction uses structured data (JSON-LD / meta tags). Some stores need
   site-specific selectors.
 - Ideas: price chart in the popup, badge on the icon when a "was" price looks fake,
   Firefox support.
+  
