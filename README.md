@@ -1,4 +1,4 @@
-# True Cost
+# True Cost 
 
 I made a browser extension that tracks product prices over time so you can see if the "70% off" sale is real, or whether the store inflated the original price to make it SEEM like it's a discounted price
 
