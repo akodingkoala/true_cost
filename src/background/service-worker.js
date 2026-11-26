@@ -19,14 +19,19 @@ function productKey(rawUrl) {
 }
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.type === "PRICE_SEEN") {
-    const url = productKey(sender.tab.url);
-    recordPrice({ ...msg.payload, url }).then(() => sendResponse({ ok: true }));
-    return true; // keep the channel open for the async response
-  }
-  if (msg.type === "GET_HISTORY") {
-    getHistory(productKey(msg.url)).then(sendResponse);
-    return true;
+  try {
+    if (msg.type === "PRICE_SEEN") {
+      const url = productKey(sender.tab.url);
+      recordPrice({ ...msg.payload, url }).then(() => sendResponse({ ok: true }));
+      return true; // keep the channel open for the async response
+    }
+    if (msg.type === "GET_HISTORY") {
+      getHistory(productKey(msg.url)).then(sendResponse);
+      return true;
+    }
+  } catch (err) {
+    console.error("True Cost:", err);
+    sendResponse(null);
   }
 });
 

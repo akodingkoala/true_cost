@@ -3,9 +3,26 @@
 
 const content = document.getElementById("content");
 
-(async function () {
+render().catch((err) => {
+  // Never leave the popup stuck on "Loading…" — show what went wrong instead.
+  content.innerHTML = `<p>Something went wrong.</p><p class="muted">${escapeHtml(err.message || err)}</p>`;
+});
+
+async function render() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const history = await chrome.runtime.sendMessage({ type: "GET_HISTORY", url: tab.url });
+
+  if (!tab?.url || !tab.url.startsWith("http")) {
+    content.innerHTML = `<p>Open a product page on a store's website to see its price history.</p>`;
+    return;
+  }
+
+  // Read the saved history straight from storage (same key format the
+  // background worker uses: "history:" + URL without ?query or #hash).
+  const url = new URL(tab.url);
+  url.search = "";
+  url.hash = "";
+  const key = `history:${url}`;
+  const { [key]: history } = await chrome.storage.local.get(key);
 
   if (!history || history.points.length === 0) {
     content.innerHTML = `<p>No price recorded for this page yet.</p>
@@ -39,7 +56,7 @@ const content = document.getElementById("content");
     ${verdict}
     <p class="muted">Tracking since ${new Date(history.firstSeen.at).toLocaleDateString()} · ${points.length} data points</p>
   `;
-})();
+}
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);

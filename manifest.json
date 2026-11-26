@@ -3,7 +3,7 @@
   "name": "True Cost",
   "version": "0.1.0",
   "description": "Tracks product prices over time so you can tell if a 'sale' is real or the original price was inflated.",
-  "permissions": ["storage"],
+  "permissions": ["storage", "activeTab"],
   "background": {
     "service_worker": "src/background/service-worker.js"
   },
