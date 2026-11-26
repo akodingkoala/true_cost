@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "True Cost",
+  "version": "0.1.0",
+  "description": "Tracks product prices over time so you can tell if a 'sale' is real or the original price was inflated.",
+  "permissions": ["storage"],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/lib/extract-price.js", "src/content/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "True Cost"
+  }
+}
